@@ -31,6 +31,7 @@ class App extends Component {
         this.state = {
             links: [],
             text: "",
+            errorText: "",
         };
         this.handleButton = this.handleButton.bind(this);
     }
@@ -42,6 +43,9 @@ class App extends Component {
                 let links = this.state.links;
                 links.push(this.state.text);
                 this.setState({links: links});
+                this.setState({errorText: ""});
+            } else {
+                this.setState({errorText: "Invalid URL"});
             }
             this.setState({text: ""});
         }
@@ -94,6 +98,7 @@ class App extends Component {
                     floatingLabelText="Enter link"
                     value={this.state.text}
                     onChange={this.handleChangeInput.bind(this)}
+                    errorText={this.state.errorText}
                     onKeyPress={(ev) => {
                         if (ev.key === 'Enter') {
                             this.handleButton();
