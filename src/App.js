@@ -94,6 +94,11 @@ class App extends Component {
                     floatingLabelText="Enter link"
                     value={this.state.text}
                     onChange={this.handleChangeInput.bind(this)}
+                    onKeyPress={(ev) => {
+                        if (ev.key === 'Enter') {
+                            this.handleButton();
+                        }
+                    }}
                 />
                 <RaisedButton onClick={this.handleButton} style={styles.submitStyle} label="Submit" primary={true} />
             </div>
