@@ -132,7 +132,7 @@ class App extends Component {
 
                     <TableRow>
                         <TableHeaderColumn>ID</TableHeaderColumn>
-                        <TableHeaderColumn>Link</TableHeaderColumn>
+                        <TableHeaderColumn>Title</TableHeaderColumn>
                         <TableHeaderColumn>Url</TableHeaderColumn>
                     </TableRow>
                 </TableHeader>
