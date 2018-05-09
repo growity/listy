@@ -29,25 +29,72 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            links: [],
             text: "",
             errorText: "",
+            siteList: []
         };
         this.handleButton = this.handleButton.bind(this);
+    }
+
+    httpGet(theUrl, callback)
+    {
+        let xmlhttp = new XMLHttpRequest();
+        xmlhttp.responseType = 'document';
+        xmlhttp.onload = function() {
+            if ( callback && typeof( callback ) === 'function' ) {
+                callback( this.responseXML );
+            }
+        };
+        xmlhttp.open("GET", theUrl, true);
+        xmlhttp.responseType = 'document';
+        xmlhttp.send();
     }
 
     handleButton() {
 
         if(this.state.text.length > 0) {
-            if (this.isUrl(this.state.text)) {
-                let links = this.state.links;
-                links.push(this.state.text);
-                this.setState({links: links});
+
+            let prevSiteList = this.state.siteList;
+            let self = this;
+            const currentUrl = this.state.text;
+
+            if (this.isUrl(currentUrl)) {
+
+                this.httpGet(currentUrl, function (response) {
+
+                    let title = response.documentElement.innerHTML.match(/<meta [^>]*property=["']og:title["'] [^>]*content=["']([^'^"]+?)["'][^>]*>/);
+                    if(title === null)
+                    {
+                        title = response.documentElement.innerHTML.match(/<title[^>]*>([^<]+)<\/title>/)[1];
+                    }
+                    else
+                    {
+                        title = title[1];
+                    }
+
+                    let description = response.documentElement.innerHTML.match(/<meta[^>]*property=["']og:description["'][^>]*content=["']([^<]+)["'][^>]*>/);
+                    if(description === null)
+                    {
+                        description = response.documentElement.innerHTML.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^<]+)["'][^>]*>/)[1];
+                    }
+                    else
+                    {
+                        description = description[1];
+                    }
+
+                    let image = response.documentElement.innerHTML.match(/<meta[^>]*property=["']og:image["'][^>]*content=["']([^<]+)["'][^>]*>/);
+                    if(image !== null)
+                        image = image[1];
+
+                    prevSiteList.push({title: title, description: description, image: image, url: currentUrl});
+                    self.setState( ({ siteList: prevSiteList }) );
+                });
                 this.setState({errorText: ""});
             } else {
                 this.setState({errorText: "Invalid URL"});
             }
             this.setState({text: ""});
+            console.log(this.state.siteList);
         }
     }
 
@@ -61,11 +108,12 @@ class App extends Component {
     }
 
   render() {
-        let tableRows = this.state.links.map( (link, index) => {
+        let tableRows = this.state.siteList.map( (link, index) => {
             return(
                 <TableRow key={index}>
                     <TableRowColumn>{index + 1}</TableRowColumn>
-                    <TableRowColumn>{link}</TableRowColumn>
+                    <TableRowColumn>{link.title}</TableRowColumn>
+                    <TableRowColumn>{link.url}</TableRowColumn>
                 </TableRow>
             );
         });
@@ -85,6 +133,7 @@ class App extends Component {
                     <TableRow>
                         <TableHeaderColumn>ID</TableHeaderColumn>
                         <TableHeaderColumn>Link</TableHeaderColumn>
+                        <TableHeaderColumn>Url</TableHeaderColumn>
                     </TableRow>
                 </TableHeader>
                 <TableBody
