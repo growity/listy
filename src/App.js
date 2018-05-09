@@ -58,7 +58,7 @@ class App extends Component {
             let self = this;
             const currentUrl = this.state.text;
 
-            if (this.isUrl(currentUrl)) {
+            if (App.isUrl(currentUrl)) {
 
                 this.httpGet(currentUrl, function (response) {
 
@@ -102,8 +102,8 @@ class App extends Component {
         this.setState({ text: text.target.value });
     }
 
-    isUrl(url) {
-        var regex = /(https?:\/\/)?((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|((\d{1,3}\.){3}\d{1,3}))(\d+)?(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?([-a-z\d_]*)?/;
+    static isUrl(url) {
+        const regex = /(https?:\/\/)?((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|((\d{1,3}\.){3}\d{1,3}))(\d+)?(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?([-a-z\d_]*)?/;
         return regex.test(url);
     }
 
