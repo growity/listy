@@ -40,9 +40,13 @@ class App extends Component {
     {
         let xmlhttp = new XMLHttpRequest();
         xmlhttp.responseType = 'document';
-        xmlhttp.onload = function() {
-            if ( callback && typeof( callback ) === 'function' ) {
-                callback( this.responseXML );
+        xmlhttp.onreadystatechange = function()
+        {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200)
+            {
+                if (callback && typeof( callback ) === 'function' ) {
+                    callback( this.responseXML );
+                }
             }
         };
         xmlhttp.open("GET", theUrl, true);
