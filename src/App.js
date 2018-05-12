@@ -65,12 +65,11 @@ class App extends Component {
         if(this.state.text.length > 0) {
 
             let prevSiteList = this.state.siteList;
-            let self = this;
             const currentUrl = this.state.text;
 
             if (App.isUrl(currentUrl)) {
 
-                this.httpGet(currentUrl).then(function (response) {
+                this.httpGet(currentUrl).then((response) => {
 
                     let title = response.documentElement.querySelector('meta[property="og:title"]').getAttribute("content");
                     if(title === null)
@@ -87,11 +86,10 @@ class App extends Component {
                     let image = response.documentElement.querySelector('meta[property="og:image"]').getAttribute("content");
 
                     prevSiteList.push({title: title, description: description, image: image, url: currentUrl});
-                    self.setState( ({ siteList: prevSiteList }) );
-                }, function (error) {
-                    self.setState({errorText: "Failed!"});
-                }).catch(function(err) {
-                    self.setState({errorText: "It failed!"});
+                    this.setState( ({ siteList: prevSiteList }) );
+                }).catch( (err) => {
+                    console.log("Catch", err);
+                    this.setState({errorText: "It failed!"});
                 });
                 this.setState({errorText: ""});
             } else {
