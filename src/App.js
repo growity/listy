@@ -36,22 +36,28 @@ class App extends Component {
         this.handleButton = this.handleButton.bind(this);
     }
 
-    httpGet(theUrl, callback)
+    httpGet(theUrl)
     {
-        let xmlhttp = new XMLHttpRequest();
-        xmlhttp.responseType = 'document';
-        xmlhttp.onreadystatechange = function()
-        {
-            if (xmlhttp.readyState === 4 && xmlhttp.status === 200)
-            {
-                if (callback && typeof( callback ) === 'function' ) {
-                    callback( this.responseXML );
+        return new Promise( (resolve, reject) => {
+            let xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.responseType = 'document';
+            xmlhttp.onload = function () {
+                if(xmlhttp.status === 200) {
+                    resolve(this.responseXML);
                 }
-            }
-        };
-        xmlhttp.open("GET", theUrl, true);
-        xmlhttp.responseType = 'document';
-        xmlhttp.send();
+                else {
+                    reject(Error(this.statusText));
+                }
+            };
+
+            xmlhttp.onerror = function () {
+                reject(Error("Network Error"));
+            };
+
+            xmlhttp.open('GET', theUrl, true);
+            xmlhttp.send();
+        });
     }
 
     handleButton() {
@@ -64,34 +70,28 @@ class App extends Component {
 
             if (App.isUrl(currentUrl)) {
 
-                this.httpGet(currentUrl, function (response) {
+                this.httpGet(currentUrl).then(function (response) {
 
-                    let title = response.documentElement.innerHTML.match(/<meta [^>]*property=["']og:title["'] [^>]*content=["']([^'^"]+?)["'][^>]*>/);
+                    let title = response.documentElement.querySelector('meta[property="og:title"]').getAttribute("content");
                     if(title === null)
                     {
-                        title = response.documentElement.innerHTML.match(/<title[^>]*>([^<]+)<\/title>/)[1];
-                    }
-                    else
-                    {
-                        title = title[1];
+                        title = response.documentElement.querySelector('title').getAttribute("content");
                     }
 
-                    let description = response.documentElement.innerHTML.match(/<meta[^>]*property=["']og:description["'][^>]*content=["']([^<]+)["'][^>]*>/);
+                    let description = response.documentElement.querySelector('meta[property="og:description"]').getAttribute("content");
                     if(description === null)
                     {
-                        description = response.documentElement.innerHTML.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^<]+)["'][^>]*>/)[1];
-                    }
-                    else
-                    {
-                        description = description[1];
+                        description = response.documentElement.querySelector('meta[name="description"]').getAttribute("content");
                     }
 
-                    let image = response.documentElement.innerHTML.match(/<meta[^>]*property=["']og:image["'][^>]*content=["']([^<]+)["'][^>]*>/);
-                    if(image !== null)
-                        image = image[1];
+                    let image = response.documentElement.querySelector('meta[property="og:image"]').getAttribute("content");
 
                     prevSiteList.push({title: title, description: description, image: image, url: currentUrl});
                     self.setState( ({ siteList: prevSiteList }) );
+                }, function (error) {
+                    self.setState({errorText: "Failed!"});
+                }).catch(function(err) {
+                    self.setState({errorText: "It failed!"});
                 });
                 this.setState({errorText: ""});
             } else {
