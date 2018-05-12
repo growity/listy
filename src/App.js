@@ -88,7 +88,6 @@ class App extends Component {
                     prevSiteList.push({title: title, description: description, image: image, url: currentUrl});
                     this.setState( ({ siteList: prevSiteList }) );
                 }).catch( (err) => {
-                    console.log("Catch", err);
                     this.setState({errorText: "It failed!"});
                 });
                 this.setState({errorText: ""});
@@ -96,7 +95,6 @@ class App extends Component {
                 this.setState({errorText: "Invalid URL"});
             }
             this.setState({text: ""});
-            console.log(this.state.siteList);
         }
     }
 
