@@ -114,18 +114,7 @@ class App extends Component {
       }
     }
 
-    showTable = (sites) => {
-      sites.map((link, index) => (
-        <TableRow key={index}>
-          <TableRowColumn>{index + 1}</TableRowColumn>
-          <TableRowColumn>{link.title}</TableRowColumn>
-          <TableRowColumn>{link.url}</TableRowColumn>
-        </TableRow>
-      ));
-    };
-
     render() {
-      console.log('Render body', this.props);
       const tableRows = this.props.data.sites.map((link, index) => (
         <TableRow key={index}>
           <TableRowColumn>{index + 1}</TableRowColumn>
