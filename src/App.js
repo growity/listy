@@ -36,10 +36,21 @@ class App extends Component {
       this.state = {
         text: '',
         errorText: '',
-        siteList: [],
+        store: props.store,
       };
       this.handleButton = this.handleButton.bind(this);
       this.handleChangeInput = this.handleChangeInput.bind(this);
+      this.onKeyPressInput = this.onKeyPressInput.bind(this);
+    }
+
+    onKeyPressInput(e) {
+      if (e.key === 'Enter') {
+        this.handleButton();
+      }
+    }
+
+    handleChangeInput(e) {
+      this.setState({ text: e.target.value });
     }
 
     httpGet(theUrl) {
@@ -66,11 +77,10 @@ class App extends Component {
 
     handleButton() {
       if (this.state.text.length > 0) {
-        const prevSiteList = this.state.siteList;
-        const currentUrl = this.state.text;
+        const url = this.state.text;
 
-        if (App.isUrl(currentUrl)) {
-          this.httpGet(currentUrl).then((response) => {
+        if (App.isUrl(url)) {
+          this.httpGet(url).then((response) => {
             let title = response.documentElement.querySelector('meta[property="og:title"]').getAttribute('content');
             if (title === null) {
               title = response.documentElement.querySelector('title').getAttribute('content');
@@ -83,10 +93,16 @@ class App extends Component {
 
             const image = response.documentElement.querySelector('meta[property="og:image"]').getAttribute('content');
 
-            prevSiteList.push({
-              title, description, image, url: currentUrl,
+            this.state.store.dispatch({
+              type: 'ADD_SITE',
+              site: {
+                title,
+                description,
+                image,
+                url,
+              },
             });
-            this.setState(({ siteList: prevSiteList }));
+            console.log('Store :', this.state.store.getState().sites);
           }).catch(() => {
             this.setState({ errorText: 'It failed!' });
           });
@@ -98,13 +114,9 @@ class App extends Component {
       }
     }
 
-    handleChangeInput = (e) => {
-      this.setState({ text: e.target.value });
-    };
-
     render() {
-      const tableRows = this.state.siteList.map((link, index) => (
-        <TableRow key={link.title}>
+      const tableRows = this.state.store.getState().sites.map((link, index) => (
+        <TableRow key={index}>
           <TableRowColumn>{index + 1}</TableRowColumn>
           <TableRowColumn>{link.title}</TableRowColumn>
           <TableRowColumn>{link.url}</TableRowColumn>
@@ -143,13 +155,9 @@ class App extends Component {
             <TextField
               floatingLabelText="Enter link"
               value={this.state.text}
-              onChange={e => this.handleChangeInput(e)}
+              onChange={this.handleChangeInput}
               errorText={this.state.errorText}
-              onKeyPress={(ev) => {
-                        if (ev.key === 'Enter') {
-                            this.handleButton();
-                        }
-                    }}
+              onKeyPress={this.onKeyPressInput}
             />
             <RaisedButton onClick={this.handleButton} style={styles.submitStyle} label="Submit" primary />
           </div>
