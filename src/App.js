@@ -11,6 +11,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import { connect } from 'react-redux';
 
 const styles = {
   propContainer: {
@@ -36,7 +37,6 @@ class App extends Component {
       this.state = {
         text: '',
         errorText: '',
-        store: props.store,
       };
       this.handleButton = this.handleButton.bind(this);
       this.handleChangeInput = this.handleChangeInput.bind(this);
@@ -93,7 +93,7 @@ class App extends Component {
 
             const image = response.documentElement.querySelector('meta[property="og:image"]').getAttribute('content');
 
-            this.state.store.dispatch({
+            this.props.dispatch({
               type: 'ADD_SITE',
               site: {
                 title,
@@ -102,9 +102,9 @@ class App extends Component {
                 url,
               },
             });
-            console.log('Store :', this.state.store.getState().sites);
-          }).catch(() => {
+          }).catch((er) => {
             this.setState({ errorText: 'It failed!' });
+            console.log('Err', er);
           });
           this.setState({ errorText: '' });
         } else {
@@ -115,7 +115,7 @@ class App extends Component {
     }
 
     render() {
-      const tableRows = this.state.store.getState().sites.map((link, index) => (
+      const tableRows = this.props.data.sites.map((link, index) => (
         <TableRow key={index}>
           <TableRowColumn>{index + 1}</TableRowColumn>
           <TableRowColumn>{link.title}</TableRowColumn>
@@ -166,4 +166,10 @@ class App extends Component {
     }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    data: state.sites,
+  };
+};
+
+export default connect(mapStateToProps, null)(App);
