@@ -12,6 +12,7 @@ import {
 } from 'material-ui/Table';
 import { connect } from 'react-redux';
 import { isUrl, httpGet } from './fetch/fetchHelpers';
+import { ADD_SITE } from './actions/site';
 
 const styles = {
   propContainer: {
@@ -66,14 +67,11 @@ class App extends Component {
 
           const image = response.documentElement.querySelector('meta[property="og:image"]').getAttribute('content');
 
-          this.props.dispatch({
-            type: 'ADD_SITE',
-            site: {
-              title,
-              description,
-              image,
-              url,
-            },
+          this.props.addNewSite({
+            title,
+            description,
+            image,
+            url,
           });
         }).catch((error) => {
           this.setState({ errorText: 'It failed!' });
@@ -139,6 +137,12 @@ class App extends Component {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  addNewSite: (newSiteObject) => {
+    dispatch(ADD_SITE(newSiteObject));
+  },
+});
+
 const mapStateToProps = state => ({ data: state.sites });
 
-export default connect(mapStateToProps, null)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
