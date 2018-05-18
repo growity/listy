@@ -4,7 +4,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
 import App from './App';
-import reducers from './Reducer/index';
+import reducers from './reducer/index';
 import registerServiceWorker from './registerServiceWorker';
 
 const createStoreMiddleware = applyMiddleware()(createStore);

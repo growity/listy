@@ -11,8 +11,8 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import { connect } from 'react-redux';
-import { isUrl, httpGet } from './fetch/fetchHelpers';
-import { ADD_SITE } from './actions/site';
+import { isUrl, httpGet } from './common/fetchHelpers';
+import { addSite } from './actions/site';
 
 const styles = {
   propContainer: {
@@ -138,8 +138,8 @@ class App extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  addNewSite: (newSiteObject) => {
-    dispatch(ADD_SITE(newSiteObject));
+  addNewSite(newSiteObject) {
+    dispatch(addSite(newSiteObject));
   },
 });
 

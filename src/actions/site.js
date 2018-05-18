@@ -1,9 +1,9 @@
 
-export const ADD_SITE = siteObject => ({
+export const addSite = siteObject => ({
   type: 'ADD_SITE',
   site: siteObject,
 });
 
-export const SITE_LIST = () => ({
+export const siteList = () => ({
   type: 'GET_SITES',
 });
