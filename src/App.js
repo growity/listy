@@ -12,7 +12,7 @@ import {
 } from 'material-ui/Table';
 import { connect } from 'react-redux';
 import { isUrl, httpGet } from './common/fetchHelpers';
-import { addSite } from './actions/site';
+import { addSiteAsync, siteListAsync } from './actions/site';
 
 const styles = {
   propContainer: {
@@ -34,6 +34,7 @@ class App extends Component {
       text: '',
       errorText: '',
     };
+    props.getSiteList();
     this.handleButton = this.handleButton.bind(this);
     this.handleChangeInput = this.handleChangeInput.bind(this);
     this.onKeyPressInput = this.onKeyPressInput.bind(this);
@@ -86,11 +87,11 @@ class App extends Component {
   }
 
   render() {
-    const tableRows = this.props.data.sites.map((link, index) => (
-      <TableRow key={index}>
-        <TableRowColumn>{index + 1}</TableRowColumn>
-        <TableRowColumn>{link.title}</TableRowColumn>
-        <TableRowColumn>{link.url}</TableRowColumn>
+    const tableRows = this.props.sites.map(link => (
+      <TableRow key={link.id}>
+        <TableRowColumn>{link.id}</TableRowColumn>
+        <TableRowColumn>{link.site.title}</TableRowColumn>
+        <TableRowColumn>{link.site.url}</TableRowColumn>
       </TableRow>
     ));
     return (
@@ -139,10 +140,13 @@ class App extends Component {
 
 const mapDispatchToProps = dispatch => ({
   addNewSite(newSiteObject) {
-    dispatch(addSite(newSiteObject));
+    dispatch(addSiteAsync(newSiteObject));
+  },
+  getSiteList() {
+    dispatch(siteListAsync());
   },
 });
 
-const mapStateToProps = state => ({ data: state.sites });
+const mapStateToProps = state => state.sites;
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

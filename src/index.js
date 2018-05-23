@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -7,7 +8,7 @@ import App from './App';
 import reducers from './reducer/index';
 import registerServiceWorker from './registerServiceWorker';
 
-const createStoreMiddleware = applyMiddleware()(createStore);
+const createStoreMiddleware = applyMiddleware(thunkMiddleware)(createStore);
 
 const Index = () => (
   <Provider store={createStoreMiddleware(reducers)}>
