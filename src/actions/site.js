@@ -1,5 +1,5 @@
 import { GET_SITES } from '../constants';
-import { getDb, setDb } from '../indexedDB';
+import { getDb, setDb } from '../indexedDB/index';
 
 export const siteList = data => ({
   type: GET_SITES,
