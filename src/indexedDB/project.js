@@ -13,7 +13,7 @@ export const setProject = (projectObject) => {
       open.onupgradeneeded = () => {
         const db = open.result;
         const store = db.createObjectStore('ProjectStore', { keyPath: 'id', autoIncrement: true });
-        store.createIndex('Project', ['project.description', 'project.title']);
+        store.createIndex('Project', ['project.title', 'project.description']);
       };
 
       open.onsuccess = () => {
@@ -48,7 +48,7 @@ export const getProjectsDb = () => {
       open.onupgradeneeded = () => {
         const db = open.result;
         const store = db.createObjectStore('ProjectStore', { keyPath: 'id', autoIncrement: true });
-        store.createIndex('Project', ['project.id', 'project.title']);
+        store.createIndex('Project', ['project.title', 'project.description']);
       };
 
       open.onsuccess = () => {
