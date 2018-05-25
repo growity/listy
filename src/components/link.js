@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
-import AppBar from 'material-ui/AppBar';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+
 import { connect } from 'react-redux';
-import { isUrl, httpGet } from './common/fetchHelpers';
-import { addSiteAsync, siteListAsync } from './actions/site';
+import { isUrl, httpGet } from '../common/fetchHelpers';
+import { addSiteAsync, siteListAsync } from '../actions/site';
 
 const styles = {
   propContainer: {
@@ -27,7 +25,7 @@ const styles = {
 };
 
 
-class App extends Component {
+class Link extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -87,51 +85,37 @@ class App extends Component {
   }
 
   render() {
-    const tableRows = this.props.sites.map(link => (
+    const tableRows = this.props.sites ? this.props.sites.map(link => (
       <TableRow key={link.id}>
-        <TableRowColumn>{link.id}</TableRowColumn>
-        <TableRowColumn>{link.site.title}</TableRowColumn>
-        <TableRowColumn>{link.site.url}</TableRowColumn>
+        <TableCell>{link.id}</TableCell>
+        <TableCell>{link.site.title}</TableCell>
+        <TableCell>{link.site.url}</TableCell>
       </TableRow>
-    ));
+    )) : null;
     return (
-      <div className="App">
-        <AppBar
-          title="Listy"
-          iconClassNameRight="muidocs-icon-navigation-expand-more"
-        />
-        <Table
-          selectable={false}
-          multiSelectable={false}
-          showCheckboxes={false}
-        >
-          <TableHeader
-            displaySelectAll={false}
-            enableSelectAll={false}
-          >
-
+      <div>
+        <Table>
+          <TableHead>
             <TableRow>
-              <TableHeaderColumn>ID</TableHeaderColumn>
-              <TableHeaderColumn>Title</TableHeaderColumn>
-              <TableHeaderColumn>Url</TableHeaderColumn>
+              <TableCell>ID</TableCell>
+              <TableCell>Title</TableCell>
+              <TableCell>Url</TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody
-            displayRowCheckbox={false}
-            showRowHover
-          >
+          </TableHead>
+          <TableBody>
             {tableRows}
           </TableBody>
         </Table>
         <div style={styles.propContainer}>
           <TextField
-            floatingLabelText="Enter link"
+            label="Enter link"
             value={this.state.text}
             onChange={this.handleChangeInput}
-            errorText={this.state.errorText}
             onKeyPress={this.onKeyPressInput}
           />
-          <RaisedButton onClick={this.handleButton} style={styles.submitStyle} label="Submit" primary />
+          <Button onClick={this.handleButton} style={styles.submitStyle} variant="raised" primary="true">
+            Submit
+          </Button>
         </div>
       </div>
     );
@@ -149,4 +133,4 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => state.sites;
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(Link);
