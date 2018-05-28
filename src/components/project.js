@@ -8,9 +8,23 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 
 import { connect } from 'react-redux';
 import { addProjectAsync, projectListAsync } from '../actions/project';
+
+const styles = theme => ({
+  root: {
+    width: '100%',
+    marginTop: theme.spacing.unit * 3,
+    overflowX: 'auto',
+  },
+  table: {
+    minWidth: 700,
+  },
+});
 
 class Project extends Component {
   constructor(props) {
@@ -47,8 +61,15 @@ class Project extends Component {
       </TableRow>
     )) : null;
     return (
-      <div>
-        <Table>
+      <Paper className={styles.root}>
+        <Toolbar>
+          <div>
+            <Typography variant="title" id="tableTitle">
+              Project List
+            </Typography>
+          </div>
+        </Toolbar>
+        <Table className={styles.table}>
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
@@ -83,7 +104,7 @@ class Project extends Component {
           </Grid>
           <Grid item xs={12} sm={3} />
         </Grid>
-      </div>
+      </Paper>
     );
   }
 }

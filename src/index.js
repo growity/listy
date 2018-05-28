@@ -18,7 +18,7 @@ const root = { flexGrow: 1 };
 const Index = () => (
   <Provider store={createStoreMiddleware(reducers)}>
     <div className="App" style={root}>
-      <Grid container spacing={24}>
+      <Grid container spacing={16}>
         <Grid item xs={12} sm={12}>
           <AppBar position="static">
             <Toolbar>
