@@ -7,12 +7,21 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 
 import { connect } from 'react-redux';
 import { isUrl, httpGet } from '../common/fetchHelpers';
 import { addSiteAsync, siteListAsync } from '../actions/site';
 
-const styles = {
+const styles = theme => ({
+  root: {
+    width: '100%',
+    marginTop: theme.spacing.unit * 3,
+    overflowX: 'auto',
+  },
   propContainer: {
     width: 400,
     overflow: 'hidden',
@@ -22,7 +31,10 @@ const styles = {
     width: 'auto',
     margin: '0 10px 0',
   },
-};
+  table: {
+    minWidth: 700,
+  },
+});
 
 
 class Link extends Component {
@@ -93,8 +105,15 @@ class Link extends Component {
       </TableRow>
     )) : null;
     return (
-      <div>
-        <Table>
+      <Paper className={styles.root}>
+        <Toolbar>
+          <div>
+            <Typography variant="title" id="tableTitle">
+              Link List
+            </Typography>
+          </div>
+        </Toolbar>
+        <Table className={styles.table}>
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
@@ -106,18 +125,23 @@ class Link extends Component {
             {tableRows}
           </TableBody>
         </Table>
-        <div style={styles.propContainer}>
-          <TextField
-            label="Enter link"
-            value={this.state.text}
-            onChange={this.handleChangeInput}
-            onKeyPress={this.onKeyPressInput}
-          />
-          <Button onClick={this.handleButton} style={styles.submitStyle} variant="raised" primary="true">
-            Submit
-          </Button>
-        </div>
-      </div>
+        <Grid container spacing={0} justify="center">
+          <Grid item xs={12} sm={4} />
+          <Grid item xs={12} sm={4}>
+            <TextField
+              label="Enter link"
+              value={this.state.text}
+              onChange={this.handleChangeInput}
+              onKeyPress={this.onKeyPressInput}
+              margin="normal"
+            />
+            <Button onClick={this.handleButton} variant="raised" primary="true">
+              Submit
+            </Button>
+          </Grid>
+          <Grid item xs={12} sm={4} />
+        </Grid>
+      </Paper>
     );
   }
 }

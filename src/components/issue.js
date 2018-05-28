@@ -11,6 +11,8 @@ import TableRow from '@material-ui/core/TableRow';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 
 import { connect } from 'react-redux';
 import { issueListAsync, addIssueAsync, updateIssueStatusAsync } from '../actions/issue';
@@ -76,6 +78,13 @@ class Issue extends Component {
     )) : null;
     return (
       <Paper className={styles.root}>
+        <Toolbar>
+          <div>
+            <Typography variant="title" id="tableTitle">
+              Issues List
+            </Typography>
+          </div>
+        </Toolbar>
         <Table className={styles.table}>
           <TableHead>
             <TableRow>
