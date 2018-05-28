@@ -5,6 +5,7 @@ db.version(1).stores({
   project: '++id,title,description',
   site: '++id,title,description,image,url',
   issue: '++id,title,done',
+  lists: '++id,title,symbol',
 });
 
 export default db;
