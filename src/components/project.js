@@ -42,8 +42,8 @@ class Project extends Component {
     const tableRows = this.props.projects ? this.props.projects.map(link => (
       <TableRow key={link.id}>
         <TableCell>{link.id}</TableCell>
-        <TableCell>{link.project.title}</TableCell>
-        <TableCell>{link.project.description}</TableCell>
+        <TableCell>{link.title}</TableCell>
+        <TableCell>{link.description}</TableCell>
       </TableRow>
     )) : null;
     return (
