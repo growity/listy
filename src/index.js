@@ -12,6 +12,7 @@ import reducers from './reducer/index';
 import registerServiceWorker from './registerServiceWorker';
 import Project from './components/project';
 import Issue from './components/issue';
+import Lists from './components/lists';
 
 const createStoreMiddleware = applyMiddleware(thunkMiddleware)(createStore);
 const root = { flexGrow: 1 };
@@ -34,6 +35,9 @@ const Index = () => (
         </Grid>
         <Grid item xs={12} sm={12}>
           <Issue />
+        </Grid>
+        <Grid item xs={12} sm={12}>
+          <Lists />
         </Grid>
       </Grid>
     </div>
