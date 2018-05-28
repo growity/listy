@@ -1,10 +1,22 @@
-import { setProject, getProjectsDb } from '../indexedDB/project';
+import DB from '../db/db';
 
 export const projectList = data => ({
   type: 'GET_PROJECTS',
   projects: data,
 });
 
-export const projectListAsync = () => getProjectsDb();
+export function projectListAsync() {
+  return (dispatch) => {
+    DB.project.toArray().then((projects) => {
+      dispatch(projectList(projects));
+    });
+  };
+}
 
-export const addProjectAsync = projectArgument => setProject(projectArgument);
+export function addProjectAsync(projectArgument) {
+  return (dispatch) => {
+    DB.project.add(projectArgument).then(() => {
+      dispatch(projectListAsync());
+    });
+  };
+}

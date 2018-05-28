@@ -88,8 +88,8 @@ class Link extends Component {
     const tableRows = this.props.sites ? this.props.sites.map(link => (
       <TableRow key={link.id}>
         <TableCell>{link.id}</TableCell>
-        <TableCell>{link.site.title}</TableCell>
-        <TableCell>{link.site.url}</TableCell>
+        <TableCell>{link.title}</TableCell>
+        <TableCell>{link.url}</TableCell>
       </TableRow>
     )) : null;
     return (
