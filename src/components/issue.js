@@ -13,7 +13,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
 
 import { connect } from 'react-redux';
-import { issueListAsync, addIssueAsync } from '../actions/issue';
+import { issueListAsync, addIssueAsync, updateIssueStatusAsync } from '../actions/issue';
 
 const styles = theme => ({
   root: {
@@ -57,17 +57,26 @@ class Issue extends Component {
     this.setState({ title: '', isDone: false });
   };
 
+  updateIssueStatusById = (id, value) => {
+    this.props.updateIssuesStatus(id, value);
+  };
+
   render() {
     const tableRows = this.props.issues ? this.props.issues.map(link => (
       <TableRow key={link.id}>
         <TableCell>{link.id}</TableCell>
         <TableCell>{link.title}</TableCell>
-        <TableCell>{ String(link.isDone) }</TableCell>
+        <TableCell>
+          <Checkbox
+            checked={link.isDone}
+            onChange={() => this.updateIssueStatusById(link.id, link.isDone)}
+          />
+        </TableCell>
       </TableRow>
     )) : null;
     return (
       <Paper className={styles.root}>
-        <Table>
+        <Table className={styles.table}>
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
@@ -118,6 +127,9 @@ const mapDispatchToProps = dispatch => ({
   },
   getIssues() {
     dispatch(issueListAsync());
+  },
+  updateIssuesStatus(id, value) {
+    dispatch(updateIssueStatusAsync(id, value));
   },
 });
 

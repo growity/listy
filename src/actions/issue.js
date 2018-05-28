@@ -20,3 +20,11 @@ export function addIssueAsync(issueArgument) {
     });
   };
 }
+
+export function updateIssueStatusAsync(id, value) {
+  return (dispatch) => {
+    DB.issue.update(id, { isDone: !value }).then(() => {
+      dispatch(issueListAsync());
+    });
+  };
+}
