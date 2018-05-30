@@ -7,12 +7,10 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
-import Links from './components/link';
 import reducers from './reducer/index';
 import registerServiceWorker from './registerServiceWorker';
-import Project from './components/project';
-import Issue from './components/issue';
 import Lists from './components/lists';
+import TableOfLists from './components/tablesOfLists';
 
 const createStoreMiddleware = applyMiddleware(thunkMiddleware)(createStore);
 const root = { flexGrow: 1 };
@@ -28,17 +26,9 @@ const Index = () => (
           </AppBar>
         </Grid>
         <Grid item xs={12} sm={12}>
-          <Links />
-        </Grid>
-        <Grid item xs={12} sm={12}>
-          <Project />
-        </Grid>
-        <Grid item xs={12} sm={12}>
-          <Issue />
-        </Grid>
-        <Grid item xs={12} sm={12}>
           <Lists />
         </Grid>
+        <TableOfLists />
       </Grid>
     </div>
   </Provider>
