@@ -13,11 +13,8 @@ import { addListAsync, getListsAsync } from '../actions/lists';
 const styles = theme => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 2,
     overflowX: 'auto',
-  },
-  table: {
-    minWidth: 700,
   },
 });
 
