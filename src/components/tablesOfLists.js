@@ -9,16 +9,13 @@ import { addListAsync, getListsAsync } from '../actions/lists';
 class TableOfLists extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      items: [],
-      title: [],
-    };
     props.getLists();
   }
 
   render() {
+    const { lists } = this.props;
     return (
-      this.props.lists.map(list => (
+      lists.map(list => (
         <Grid item xs={12} lg={12} md={12} sm={12} key={list.id}>
           <TableItem list={list} />
         </Grid>
