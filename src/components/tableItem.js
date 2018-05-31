@@ -33,6 +33,7 @@ class Item extends Component {
     this.state = {
       text: '',
       list_id: props.list.id,
+      enterText: 'Enter item...',
     };
     this.handleButton = this.handleButton.bind(this);
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
@@ -70,9 +71,12 @@ class Item extends Component {
               <Paper className={classes.paper}>
                 <List component="nav">
                   <ListItem button>
+                    <b>{list.title}</b>
+                  </ListItem>
+                  <ListItem button>
                     <TextField
                       className={classes.textField}
-                      label={list.title}
+                      label={this.state.enterText}
                       value={this.state.text}
                       onChange={e => this.handleChangeTitle(e, list.id)}
                       margin="normal"
