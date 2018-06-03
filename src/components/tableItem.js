@@ -14,7 +14,10 @@ import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
 import { connect } from 'react-redux';
-import { addItemAsync, getItemsAsync } from '../actions/item';
+import Downshift from 'downshift';
+import MenuItem from '@material-ui/core/MenuItem';
+
+import { addItemAsync, getItemsAsync, getItemsBySymbolAsync } from '../actions/item';
 
 const styles = theme => ({
   root: {
@@ -34,15 +37,72 @@ const styles = theme => ({
     marginTop: 0,
     overflowX: 'auto',
   },
+  container: {
+    flexGrow: 1,
+    position: 'relative',
+  },
 });
+
+function renderInput(inputProps) {
+  const {
+    InputProps,
+    classes,
+    ref,
+    ...other
+  } = inputProps;
+
+  return (
+    <TextField
+      InputProps={{
+        inputRef: ref,
+        classes: {
+          root: classes.textField,
+        },
+        ...InputProps,
+      }}
+      {...other}
+    />
+  );
+}
+
+function renderSuggestion(argSuggestion) {
+  const {
+    suggestion,
+    index,
+    itemProps,
+    highlightedIndex,
+    selectedItem,
+  } = argSuggestion;
+
+  const isHighlighted = highlightedIndex === index;
+  const isSelected = (selectedItem || '').indexOf(suggestion.text) > -1;
+
+  return (
+    <MenuItem
+      {...itemProps}
+      key={suggestion.text}
+      selected={isHighlighted}
+      component="div"
+      style={{
+        fontWeight: isSelected ? 500 : 400,
+      }}
+    >
+      {suggestion.text}
+    </MenuItem>
+  );
+}
 
 class TableItem extends React.Component {
   constructor(props) {
     super(props);
+    const { list } = props;
     this.state = {
       text: '',
-      list_id: props.list.id,
+      list_id: list.id,
       enterText: 'Enter item...',
+      selectedItem: [],
+      symbolItems: [],
+      backspace: false,
     };
     this.handleButton = this.handleButton.bind(this);
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
@@ -58,20 +118,56 @@ class TableItem extends React.Component {
     });
   };
 
-  handleChangeTitle = (e, id) => {
-    this.setState({ text: e.target.value, list_id: id });
+  handleChangeDownshift = (item) => {
+    let { selectedItem } = this.state;
+
+    if (selectedItem.indexOf(item) === -1) {
+      selectedItem = [...selectedItem, item];
+    }
+
+    this.setState({
+      text: this.state.text.concat(item),
+      backspace: true,
+      selectedItem,
+    });
+  };
+
+  handleChangeTitle = (e) => {
+    this.setState({ text: e.target.value });
+    const item = e.target.value.split(' ');
+    const symbol = item[item.length - 1];
+    if (symbol.length > 0 && symbol.replace(/\s/g, '').length > 0) {
+      this.props.getItemsBySymbol(symbol, this.state.list_id);
+    }
+
+    if (symbol === '' || symbol[0].match(/^[A-Za-z]+$/)) {
+      this.setState({ backspace: true });
+    } else {
+      this.setState({ backspace: false });
+    }
   };
 
   handleButton = (e) => {
     if (e.key === 'Enter' && this.state.list_id != null) {
       this.props.addItem(this.state);
-      this.setState({ text: '', list_id: null });
+      this.setState({ text: '' });
+    }
+    const { text, selectedItem } = this.state;
+    if (selectedItem.length && !text.length && e.key === 'Backspace') {
+      this.setState({
+        selectedItem: selectedItem.slice(0, selectedItem.length - 1),
+      });
     }
   };
 
   render() {
-    const { expanded } = this.state;
     const { list, classes } = this.props;
+    let { symbolItems } = this.props;
+    const { text, selectedItem, expanded } = this.state;
+    if (this.state.backspace === true) {
+      symbolItems = [];
+    }
+
     const Rows = list.items ? list.items.map((item, index) => (
       <ListItem button divider key={item.text + index}>
         <ListItemText primary={item.text} />
@@ -83,7 +179,7 @@ class TableItem extends React.Component {
     return (
       <Grid container className={classes.root} spacing={16}>
         <Grid item xs={12}>
-          <Grid container className={classes.demo} justify="center" spacing={16}>
+          <Grid container justify="center" spacing={16}>
             <Grid key={0} item lg={6} md={6} sm={6}>
               <Paper className={classes.paper}>
                 <ExpansionPanel expanded={expanded === 'panel1'} onChange={this.handleChange('panel1')}>
@@ -93,14 +189,42 @@ class TableItem extends React.Component {
                   <ExpansionPanelDetails className={classes.expansion}>
                     <List component="nav">
                       <ListItem button>
-                        <TextField
-                          className={classes.textField}
-                          label={this.state.enterText}
-                          value={this.state.text}
-                          onChange={e => this.handleChangeTitle(e, list.id)}
-                          margin="normal"
-                          onKeyDown={e => this.handleButton(e)}
-                        />
+                        <Downshift inputValue={text} onChange={this.handleChangeDownshift} selectedItem={selectedItem}>
+                          {({
+                              getInputProps,
+                              getItemProps,
+                              isOpen,
+                              inputValue: inputValue2,
+                              selectedItem: selectedItem2,
+                              highlightedIndex,
+                            }) => (
+                              <div className={classes.container}>
+                                {renderInput({
+                                  fullWidth: true,
+                                  classes,
+                                  InputProps: getInputProps({
+                                    onChange: this.handleChangeTitle,
+                                    onKeyDown: this.handleButton,
+                                    placeholder: 'Enter item...',
+                                    id: 'integration-downshift-multiple',
+                                  }),
+                                })}
+                                {isOpen ? (
+                                  <Paper className={classes.paper} square>
+                                    {symbolItems.map((suggestion, index) =>
+                                      renderSuggestion({
+                                        suggestion,
+                                        index,
+                                        itemProps: getItemProps({ item: suggestion.text }),
+                                        highlightedIndex,
+                                        selectedItem: selectedItem2,
+                                      }))
+                                    }
+                                  </Paper>
+                                ) : null}
+                              </div>
+                          )}
+                        </Downshift>
                       </ListItem>
                       <Divider />
                       {Rows}
@@ -123,9 +247,12 @@ const mapDispatchToProps = dispatch => ({
   getItems(listId) {
     dispatch(getItemsAsync(listId));
   },
+  getItemsBySymbol(symbol, listId) {
+    dispatch(getItemsBySymbolAsync(symbol, listId));
+  },
 });
 
-const mapStateToProps = state => state.lists;
+const mapStateToProps = state => ({ symbolItems: state.items.symbolItems });
 
 TableItem.propTypes = {
   classes: PropTypes.object.isRequired,
