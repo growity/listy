@@ -43,7 +43,9 @@ export function getItemsBySymbolAsync(symbol, listId) {
   return (dispatch) => {
     const allItems = [];
     DB.lists
-      .where({ symbol: symbol[0] })
+      .where('id')
+      .notEqual(listId)
+      .and(lists => lists.symbol === symbol[0])
       .toArray()
       .then((items) => {
         if (typeof items === 'object') {
