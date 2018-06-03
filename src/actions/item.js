@@ -39,13 +39,23 @@ export function addItemAsync(itemArgument) {
 }
 
 export function getItemsBySymbolAsync(symbol, listId) {
+  const text = symbol.substr(1).toLowerCase();
   return (dispatch) => {
-    DB.lists.get({ symbol: symbol }).then((items) => {
-      // console.log('Action:', items);
-      if (typeof items === 'object' && typeof items.items === 'object') {
-        const allItems = items.items.map(item => ({ text: item.text }));
+    const allItems = [];
+    DB.lists
+      .where({ symbol: symbol[0] })
+      .toArray()
+      .then((items) => {
+        if (typeof items === 'object') {
+          items.map((item) => {
+            item.items.map((it) => {
+              if (it.text.toLowerCase().indexOf(text) > -1) {
+                allItems.push({ text: it.text });
+              }
+            });
+          });
+        }
         dispatch(symbolItemsList(allItems));
-      }
-    });
+      });
   };
 }
