@@ -26,14 +26,30 @@ export function getItemsAsync(listId = null) {
 
 export function addItemAsync(itemArgument) {
   return (dispatch) => {
+    const itemSymbols = [];
+    itemArgument.text.split(' ').map((items) => {
+      DB.lists.get({ symbol: items[0] }).then((item) => {
+        if (typeof item === 'object' && typeof item.items === 'object') {
+          item.items.map((it) => {
+            if (it.text === items.substring(1, items.length)) {
+              itemSymbols.push({ symbol: items });
+            }
+            return true;
+          });
+        }
+        return true;
+      });
+      return true;
+    });
+    itemArgument.selectedItem = itemSymbols;
     DB.lists.get(itemArgument.list_id).then((list) => {
       if (list.items === undefined || typeof list.items !== 'object') {
         list.items = [];
       }
       list.items.push(itemArgument);
-      DB.lists.update(itemArgument.list_id, { items: list.items }).then(() => {
-        return dispatch(getListsAsync());
-      });
+      DB.lists
+        .update(itemArgument.list_id, { items: list.items })
+        .then(() => dispatch(getListsAsync()));
     });
   };
 }
@@ -52,9 +68,11 @@ export function getItemsBySymbolAsync(symbol, listId) {
           items.map((item) => {
             item.items.map((it) => {
               if (it.text.toLowerCase().indexOf(text) > -1) {
-                allItems.push({ text: it.text });
+                allItems.push({ text: it.text, symbol: item.symbol });
               }
+              return true;
             });
+            return true;
           });
         }
         dispatch(symbolItemsList(allItems));
