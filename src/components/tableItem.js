@@ -31,6 +31,7 @@ const styles = theme => ({
   expansion: {
     alignItems: 'center',
     display: 'block',
+    zIndex: -991,
   },
   textField: {
     width: '100%',
@@ -40,6 +41,20 @@ const styles = theme => ({
   container: {
     flexGrow: 1,
     position: 'relative',
+  },
+  paper: {
+    zIndex: 1,
+    zDepth: 1,
+    marginTop: theme.spacing.unit,
+  },
+  items: {
+    flexGrow: 1,
+    position: 'absolute',
+    zIndex: 999,
+  },
+  item: {
+    position: 'absolute',
+    zIndex: 1000,
   },
 });
 
@@ -77,19 +92,21 @@ function renderSuggestion(argSuggestion) {
   const isHighlighted = highlightedIndex === index;
   const isSelected = (selectedItem || '').indexOf(suggestion.text) > -1;
 
-  return (
-    <MenuItem
-      {...itemProps}
-      key={suggestion.text}
-      selected={isHighlighted}
-      component="div"
-      style={{
-        fontWeight: isSelected ? 500 : 400,
-      }}
-    >
-      {suggestion.text}
-    </MenuItem>
-  );
+  if (!selectedItem.includes(suggestion.symbol.concat(suggestion.text))) {
+    return (
+      <MenuItem
+        {...itemProps}
+        key={suggestion.text}
+        selected={isHighlighted}
+        component="div"
+        style={{
+          fontWeight: isSelected ? 500 : 400,
+        }}
+      >
+        {suggestion.text}
+      </MenuItem>
+    );
+  }
 }
 
 class TableItem extends React.Component {
@@ -120,13 +137,18 @@ class TableItem extends React.Component {
 
   handleChangeDownshift = (item) => {
     let { selectedItem } = this.state;
+    const words = this.state.text.split(' ');
+    const lastWord = words[words.length - 1];
+    let text = this.state.text;
 
-    if (selectedItem.indexOf(item) === -1) {
-      selectedItem = [...selectedItem, item];
+    if (selectedItem.indexOf(lastWord[0].concat(item)) === -1) {
+      selectedItem = [...selectedItem, lastWord[0].concat(item)];
+      text = this.state.text.slice(0, this.state.text.length - (lastWord.length - 1));
+      text = text.concat(item);
     }
 
     this.setState({
-      text: this.state.text.concat(item),
+      text,
       backspace: true,
       selectedItem,
     });
@@ -188,27 +210,27 @@ class TableItem extends React.Component {
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails className={classes.expansion}>
                     <List component="nav">
-                      <ListItem button>
-                        <Downshift inputValue={text} onChange={this.handleChangeDownshift} selectedItem={selectedItem}>
-                          {({
-                              getInputProps,
-                              getItemProps,
-                              isOpen,
-                              inputValue: inputValue2,
-                              selectedItem: selectedItem2,
-                              highlightedIndex,
-                            }) => (
-                              <div className={classes.container}>
-                                {renderInput({
-                                  fullWidth: true,
-                                  classes,
-                                  InputProps: getInputProps({
-                                    onChange: this.handleChangeTitle,
-                                    onKeyDown: this.handleButton,
-                                    placeholder: 'Enter item...',
-                                    id: 'integration-downshift-multiple',
-                                  }),
-                                })}
+                      <Downshift inputValue={text} onChange={this.handleChangeDownshift} selectedItem={selectedItem}>
+                        {({
+                            getInputProps,
+                            getItemProps,
+                            isOpen,
+                            inputValue: inputValue2,
+                            selectedItem: selectedItem2,
+                            highlightedIndex,
+                          }) => (
+                            <div className={classes.container}>
+                              {renderInput({
+                                fullWidth: true,
+                                classes,
+                                InputProps: getInputProps({
+                                  onChange: this.handleChangeTitle,
+                                  onKeyDown: this.handleButton,
+                                  placeholder: 'Enter item...',
+                                  id: 'integration-downshift-multiple',
+                                }),
+                              })}
+                              <div className={classes.items}>
                                 {isOpen ? (
                                   <Paper className={classes.paper} square>
                                     {symbolItems.map((suggestion, index) =>
@@ -223,10 +245,9 @@ class TableItem extends React.Component {
                                   </Paper>
                                 ) : null}
                               </div>
-                          )}
-                        </Downshift>
-                      </ListItem>
-                      <Divider />
+                            </div>
+                        )}
+                      </Downshift>
                       {Rows}
                     </List>
                   </ExpansionPanelDetails>
