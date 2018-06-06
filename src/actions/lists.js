@@ -1,22 +1,29 @@
-import DB from '../db/db';
+// import DB from '../db/db';
 
-export const getLists = data => ({
+export const getLists = () => ({
   type: 'GET_LISTS',
+  // lists: data,
+});
+
+export const addLists = data => ({
+  type: 'ADD_LIST',
   lists: data,
 });
 
 export function getListsAsync() {
   return (dispatch) => {
-    DB.lists.toArray().then((lists) => {
-      dispatch(getLists(lists));
-    });
+    dispatch(getLists());
+    // DB.lists.toArray().then((lists) => {
+    //   dispatch(getLists(lists));
+    // });
   };
 }
 
 export function addListAsync(listArgument) {
   return (dispatch) => {
-    DB.lists.add(listArgument).then(() => {
-      dispatch(getListsAsync());
-    });
+    dispatch(addLists(listArgument));
+    // DB.lists.add(listArgument).then(() => {
+    //   dispatch(getListsAsync());
+    // });
   };
 }
