@@ -282,4 +282,4 @@ TableItem.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(TableItem));
+export default withStyles(styles)(connect(null, mapDispatchToProps)(TableItem));
