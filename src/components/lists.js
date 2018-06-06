@@ -32,9 +32,13 @@ class Lists extends Component {
   }
 
   handleButton = () => {
-    const listParam = { title: this.state.title, symbol: this.state.symbol };
-    this.props.addList(listParam);
-    this.setState({ title: '', symbol: '' });
+    this.props.addList({
+      title: this.state.title,
+      symbol: this.state.symbol,
+      id: new Date(),
+      items: [],
+    });
+    this.setState({ title: '', symbol: '', id: '' });
   };
 
   handleChangeTitle = (e) => {

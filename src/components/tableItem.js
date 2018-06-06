@@ -171,7 +171,12 @@ class TableItem extends React.Component {
 
   handleButton = (e) => {
     if (e.key === 'Enter' && this.state.list_id != null) {
-      this.props.addItem(this.state);
+      this.props.addItem({
+        id: new Date(),
+        text: this.state.text,
+        list_id: this.state.list_id,
+        selectedItem: [],
+      });
       this.setState({ text: '' });
     }
     const { text, selectedItem } = this.state;
@@ -184,10 +189,10 @@ class TableItem extends React.Component {
 
   render() {
     const { list, classes } = this.props;
-    let { symbolItems } = this.props;
+    let { items } = this.props;
     const { text, selectedItem, expanded } = this.state;
     if (this.state.backspace === true) {
-      symbolItems = [];
+      items = [];
     }
 
     const Rows = list.items ? list.items.map((item, index) => (
@@ -233,7 +238,7 @@ class TableItem extends React.Component {
                               <div className={classes.items}>
                                 {isOpen ? (
                                   <Paper className={classes.paper} square>
-                                    {symbolItems.map((suggestion, index) =>
+                                    {items.map((suggestion, index) =>
                                       renderSuggestion({
                                         suggestion,
                                         index,
@@ -272,8 +277,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(getItemsBySymbolAsync(symbol, listId));
   },
 });
-
-const mapStateToProps = state => ({ symbolItems: state.items.symbolItems });
 
 TableItem.propTypes = {
   classes: PropTypes.object.isRequired,
