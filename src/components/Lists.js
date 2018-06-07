@@ -25,10 +25,13 @@ class Lists extends Component {
       title: '',
       symbol: '',
     };
-    props.getLists();
     this.handleButton = this.handleButton.bind(this);
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
     this.handleChangeSymbol = this.handleChangeSymbol.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.getLists();
   }
 
   handleButton = () => {

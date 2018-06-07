@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Grid from '@material-ui/core/Grid';
 import { connect } from 'react-redux';
-import TableItem from './tableItem';
+import TableItem from './TableItem';
 import { addListAsync, getListsAsync } from '../actions/lists';
 
 

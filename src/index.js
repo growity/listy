@@ -9,8 +9,8 @@ import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
 import reducers from './reducer/index';
 import registerServiceWorker from './registerServiceWorker';
-import Lists from './components/lists';
-import TableOfLists from './components/tablesOfLists';
+import Lists from './components/Lists';
+import TableOfLists from './components/TablesOfLists';
 
 const createStoreMiddleware = applyMiddleware(thunkMiddleware)(createStore);
 const root = { flexGrow: 1 };
