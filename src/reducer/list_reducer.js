@@ -25,6 +25,7 @@ export default (state = initialState, action) => {
         };
       }
       const foundItems = targetList.items.filter(item => item.text.indexOf(word) > -1);
+      foundItems.forEach((item) => { item.symbol = targetList.symbol; });
 
       return {
         ...state,

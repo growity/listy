@@ -92,19 +92,25 @@ function renderSuggestion(argSuggestion) {
   const isHighlighted = highlightedIndex === index;
   const isSelected = (selectedItem || '').indexOf(suggestion.text) > -1;
 
-  return (
-    <MenuItem
-      {...itemProps}
-      key={suggestion.id}
-      selected={isHighlighted}
-      component="div"
-      style={{
-        fontWeight: isSelected ? 500 : 400,
-      }}
-    >
-      {suggestion.text}
-    </MenuItem>
-  );
+  let suggestions = '';
+  if (!selectedItem.includes(suggestion.symbol.concat(suggestion.text))) {
+    suggestions = (
+      <MenuItem
+        {...itemProps}
+        key={suggestion.id}
+        selected={isHighlighted}
+        component="div"
+        style={{
+          fontWeight: isSelected ? 500 : 400,
+        }}
+      >
+        {suggestion.text}
+      </MenuItem>
+    );
+  } else {
+    suggestions = ('');
+  }
+  return suggestions;
 }
 
 class TableItem extends React.Component {
@@ -114,7 +120,6 @@ class TableItem extends React.Component {
     this.state = {
       text: '',
       list_id: list.id,
-      enterText: 'Enter item...',
       selectedItem: [],
       symbolItems: [],
       backspace: false,
@@ -137,7 +142,7 @@ class TableItem extends React.Component {
     let { selectedItem } = this.state;
     const words = this.state.text.split(' ');
     const lastWord = words[words.length - 1];
-    let text = this.state.text;
+    let { text } = this.state;
 
     if (selectedItem.indexOf(lastWord[0].concat(item)) === -1) {
       selectedItem = [...selectedItem, lastWord[0].concat(item)];
