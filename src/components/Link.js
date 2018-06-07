@@ -44,10 +44,13 @@ class Link extends Component {
       text: '',
       errorText: '',
     };
-    props.getSiteList();
     this.handleButton = this.handleButton.bind(this);
     this.handleChangeInput = this.handleChangeInput.bind(this);
     this.onKeyPressInput = this.onKeyPressInput.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.getSiteList();
   }
 
   onKeyPressInput(e) {
