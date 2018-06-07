@@ -1,8 +1,8 @@
 import DB from '../db/db';
 
-export const projectList = data => ({
+export const projectList = projects => ({
   type: 'GET_PROJECTS',
-  projects: data,
+  projects,
 });
 
 export function projectListAsync() {
@@ -13,9 +13,9 @@ export function projectListAsync() {
   };
 }
 
-export function addProjectAsync(projectArgument) {
+export function addProjectAsync(project) {
   return (dispatch) => {
-    DB.project.add(projectArgument).then(() => {
+    DB.project.add(project).then(() => {
       dispatch(projectListAsync());
     });
   };

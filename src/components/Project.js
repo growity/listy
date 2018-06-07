@@ -33,9 +33,12 @@ class Project extends Component {
       title: '',
       description: '',
     };
-    props.getProjects();
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
     this.handleChangeDescription = this.handleChangeDescription.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.getProjects();
   }
 
   handleButton = () => {
@@ -110,8 +113,8 @@ class Project extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  addProject(projectArgument) {
-    dispatch(addProjectAsync(projectArgument));
+  addProject(project) {
+    dispatch(addProjectAsync(project));
   },
   getProjects() {
     dispatch(projectListAsync());

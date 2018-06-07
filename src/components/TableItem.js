@@ -80,14 +80,14 @@ function renderInput(inputProps) {
   );
 }
 
-function renderSuggestion(argSuggestion) {
+function renderSuggestion(Suggestion) {
   const {
     suggestion,
     index,
     itemProps,
     highlightedIndex,
     selectedItem,
-  } = argSuggestion;
+  } = Suggestion;
 
   const isHighlighted = highlightedIndex === index;
   const isSelected = (selectedItem || '').indexOf(suggestion.text) > -1;
@@ -270,8 +270,8 @@ class TableItem extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  addItem(itemArgument) {
-    dispatch(addItemAsync(itemArgument));
+  addItem(item) {
+    dispatch(addItemAsync(item));
   },
   getItems(listId) {
     dispatch(getItemsAsync(listId));

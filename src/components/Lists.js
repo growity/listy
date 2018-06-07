@@ -91,8 +91,8 @@ class Lists extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  addList(listArgument) {
-    dispatch(addListAsync(listArgument));
+  addList(list) {
+    dispatch(addListAsync(list));
   },
   getLists() {
     dispatch(getListsAsync());

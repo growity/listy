@@ -1,22 +1,22 @@
 import { GET_SITES } from '../constants';
 import DB from '../db/db';
 
-export const siteList = data => ({
+export const siteList = sites => ({
   type: GET_SITES,
-  site: data,
+  sites,
 });
 
 export function siteListAsync() {
   return (dispatch) => {
-    DB.site.toArray().then((projects) => {
-      dispatch(siteList(projects));
+    DB.site.toArray().then((sites) => {
+      dispatch(siteList(sites));
     });
   };
 }
 
-export function addSiteAsync(siteObject) {
+export function addSiteAsync(site) {
   return (dispatch) => {
-    DB.site.add(siteObject).then(() => {
+    DB.site.add(site).then(() => {
       dispatch(siteListAsync());
     });
   };

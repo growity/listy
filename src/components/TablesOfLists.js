@@ -7,9 +7,8 @@ import { addListAsync, getListsAsync } from '../actions/lists';
 
 
 class TableOfLists extends Component {
-  constructor(props) {
-    super(props);
-    props.getLists();
+  componentWillMount() {
+    this.props.getLists();
   }
 
   render() {

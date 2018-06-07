@@ -3,7 +3,7 @@ const initialState = { lists: [], symbolItems: [] };
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_LIST': {
-      return { ...state, lists: [...state.lists, action.lists] };
+      return { ...state, lists: [...state.lists, action.list] };
     }
     case 'ADD_ITEM': {
       return {

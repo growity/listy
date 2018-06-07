@@ -31,9 +31,9 @@ export function getItemsAsync(listId = null) {
   };
 }
 
-export function addItemAsync(itemArgument) {
+export function addItemAsync(item) {
   return (dispatch) => {
-    dispatch(addItem(itemArgument, itemArgument.list_id));
+    dispatch(addItem(item, item.list_id));
     // const itemSymbols = [];
     // itemArgument.text.split(' ').map((items) => {
     //   DB.lists.get({ symbol: items[0] }).then((item) => {
