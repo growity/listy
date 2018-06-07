@@ -92,21 +92,19 @@ function renderSuggestion(argSuggestion) {
   const isHighlighted = highlightedIndex === index;
   const isSelected = (selectedItem || '').indexOf(suggestion.text) > -1;
 
-  if (!selectedItem.includes(suggestion.symbol.concat(suggestion.text))) {
-    return (
-      <MenuItem
-        {...itemProps}
-        key={suggestion.text}
-        selected={isHighlighted}
-        component="div"
-        style={{
-          fontWeight: isSelected ? 500 : 400,
-        }}
-      >
-        {suggestion.text}
-      </MenuItem>
-    );
-  }
+  return (
+    <MenuItem
+      {...itemProps}
+      key={suggestion.id}
+      selected={isHighlighted}
+      component="div"
+      style={{
+        fontWeight: isSelected ? 500 : 400,
+      }}
+    >
+      {suggestion.text}
+    </MenuItem>
+  );
 }
 
 class TableItem extends React.Component {
@@ -189,14 +187,14 @@ class TableItem extends React.Component {
 
   render() {
     const { list, classes } = this.props;
-    let { items } = this.props;
+    let items = this.props.symbolItems;
     const { text, selectedItem, expanded } = this.state;
     if (this.state.backspace === true) {
       items = [];
     }
 
-    const Rows = list.items ? list.items.map((item, index) => (
-      <ListItem button divider key={item.text + index}>
+    const Rows = list.items ? list.items.map(item => (
+      <ListItem button divider key={item.id}>
         <ListItemText primary={item.text} />
       </ListItem>
     )) : (
@@ -278,8 +276,10 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
+const mapStateToProps = state => ({ symbolItems: state.lists.symbolItems });
+
 TableItem.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(connect(null, mapDispatchToProps)(TableItem));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(TableItem));

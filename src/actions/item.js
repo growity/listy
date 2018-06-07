@@ -1,4 +1,4 @@
-import DB from '../db/db';
+// import DB from '../db/db';
 // import { getListsAsync } from './lists';
 
 export const itemList = (data, id) => ({
@@ -13,9 +13,9 @@ export const addItem = (data, id) => ({
   list_id: id,
 });
 
-export const symbolItemsList = argSymbolItems => ({
+export const symbolItemsList = lastParams => ({
   type: 'GET_SYMBOL_ITEMS',
-  symbolItems: argSymbolItems,
+  lastParams,
 });
 
 export function getItemsAsync(listId = null) {
@@ -33,7 +33,6 @@ export function getItemsAsync(listId = null) {
 
 export function addItemAsync(itemArgument) {
   return (dispatch) => {
-    console.log('itemArgument', itemArgument);
     dispatch(addItem(itemArgument, itemArgument.list_id));
     // const itemSymbols = [];
     // itemArgument.text.split(' ').map((items) => {
@@ -63,28 +62,31 @@ export function addItemAsync(itemArgument) {
   };
 }
 
-export function getItemsBySymbolAsync(symbol, listId) {
-  const text = symbol.substr(1).toLowerCase();
+export function getItemsBySymbolAsync(lastWord, listId) {
+  // const text = lastWord.substr(1).toLowerCase();
   return (dispatch) => {
-    const allItems = [];
-    DB.lists
-      .where('id')
-      .notEqual(listId)
-      .and(lists => lists.symbol === symbol[0])
-      .toArray()
-      .then((items) => {
-        if (typeof items === 'object') {
-          items.map((item) => {
-            item.items.map((it) => {
-              if (it.text.toLowerCase().indexOf(text) > -1) {
-                allItems.push({ text: it.text, symbol: item.symbol });
-              }
-              return true;
-            });
-            return true;
-          });
-        }
-        dispatch(symbolItemsList(allItems));
-      });
+    dispatch(symbolItemsList({ lastWord, listId }));
   };
+  // return (dispatch) => {
+  //   const allItems = [];
+  //   DB.lists
+  //     .where('id')
+  //     .notEqual(listId)
+  //     .and(lists => lists.symbol === symbol[0])
+  //     .toArray()
+  //     .then((items) => {
+  //       if (typeof items === 'object') {
+  //         items.map((item) => {
+  //           item.items.map((it) => {
+  //             if (it.text.toLowerCase().indexOf(text) > -1) {
+  //               allItems.push({ text: it.text, symbol: item.symbol });
+  //             }
+  //             return true;
+  //           });
+  //           return true;
+  //         });
+  //       }
+  //       dispatch(symbolItemsList(allItems));
+  //     });
+  // };
 }
