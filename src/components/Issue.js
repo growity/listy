@@ -62,19 +62,19 @@ class Issue extends Component {
     this.setState({ title: '', isDone: false });
   };
 
-  updateIssueStatusById = (id, value) => {
-    this.props.updateIssuesStatus(id, value);
+  updateIssueStatusById = (issueId, statusIssue) => {
+    this.props.updateIssuesStatus(issueId, statusIssue);
   };
 
   render() {
-    const tableRows = this.props.issues ? this.props.issues.map(link => (
-      <TableRow key={link.id}>
-        <TableCell>{link.id}</TableCell>
-        <TableCell>{link.title}</TableCell>
+    const tableRows = this.props.issues ? this.props.issues.map(issue => (
+      <TableRow key={issue.id}>
+        <TableCell>{issue.id}</TableCell>
+        <TableCell>{issue.title}</TableCell>
         <TableCell>
           <Checkbox
-            checked={link.isDone}
-            onChange={() => this.updateIssueStatusById(link.id, link.isDone)}
+            checked={issue.isDone}
+            onChange={() => this.updateIssueStatusById(issue.id, issue.isDone)}
           />
         </TableCell>
       </TableRow>
@@ -140,8 +140,8 @@ const mapDispatchToProps = dispatch => ({
   getIssues() {
     dispatch(issueListAsync());
   },
-  updateIssuesStatus(id, value) {
-    dispatch(updateIssueStatusAsync(id, value));
+  updateIssuesStatus(issueId, statusIssue) {
+    dispatch(updateIssueStatusAsync(issueId, statusIssue));
   },
 });
 

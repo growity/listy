@@ -21,9 +21,9 @@ export function addIssueAsync(issue) {
   };
 }
 
-export function updateIssueStatusAsync(id, value) {
+export function updateIssueStatusAsync(issueId, statusIssue) {
   return (dispatch) => {
-    DB.issue.update(id, { isDone: !value }).then(() => {
+    DB.issue.update(issueId, { isDone: !statusIssue }).then(() => {
       dispatch(issueListAsync());
     });
   };
