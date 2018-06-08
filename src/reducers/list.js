@@ -11,17 +11,17 @@ export default (state = initialState, action) => {
           { ...list, items: [...list.items, action.items] } : list),
       };
     }
-    case 'GET_SYMBOL_ITEMS': {
+    case 'GET_SUGGESTIONS': {
       const { lastWord, listId } = action.lastParams;
-      const symbol = lastWord[0];
+      const lastSymbol = lastWord[0];
       const word = lastWord.substr(1).toLowerCase();
       const { lists } = state;
 
-      const targetList = lists.find(list => list.id !== listId && list.symbol === symbol);
+      const targetList = lists.find(list => list.id !== listId && list.symbol === lastSymbol);
       if (!targetList || !targetList.items.length) {
         return {
           ...state,
-          symbolItems: [],
+          suggestions: [],
         };
       }
       const foundItems = targetList.items.filter(item => item.text.indexOf(word) > -1);
@@ -29,7 +29,7 @@ export default (state = initialState, action) => {
 
       return {
         ...state,
-        symbolItems: foundItems,
+        suggestions: foundItems,
       };
     }
     case 'GET_LISTS': {

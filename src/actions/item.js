@@ -13,8 +13,8 @@ export const addItem = (data, id) => ({
   list_id: id,
 });
 
-export const symbolItemsList = lastParams => ({
-  type: 'GET_SYMBOL_ITEMS',
+export const getSuggestions = lastParams => ({
+  type: 'GET_SUGGESTIONS',
   lastParams,
 });
 
@@ -62,10 +62,10 @@ export function addItemAsync(item) {
   };
 }
 
-export function getItemsBySymbolAsync(lastWord, listId) {
+export function getSuggestionsByLastWordAsync(lastWord, listId) {
   // const text = lastWord.substr(1).toLowerCase();
   return (dispatch) => {
-    dispatch(symbolItemsList({ lastWord, listId }));
+    dispatch(getSuggestions({ lastWord, listId }));
   };
   // return (dispatch) => {
   //   const allItems = [];

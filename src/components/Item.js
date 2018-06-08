@@ -17,7 +17,7 @@ import { connect } from 'react-redux';
 import Downshift from 'downshift';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import { addItemAsync, getItemsBySymbolAsync } from '../actions/item';
+import { addItemAsync, getSuggestionsByLastWordAsync } from '../actions/item';
 
 const styles = theme => ({
   root: {
@@ -185,10 +185,10 @@ class Item extends Component {
 
   render() {
     const { list, classes } = this.props;
-    let items = this.props.symbolItems;
+    let { suggestions } = this.props;
     const { text, selectedItem, expanded } = this.state;
     if (this.state.backspace === true) {
-      items = [];
+      suggestions = [];
     }
 
     const Rows = list.items ? list.items.map(item => (
@@ -234,7 +234,7 @@ class Item extends Component {
                               <div className={classes.items}>
                                 {isOpen ? (
                                   <Paper className={classes.paper} square>
-                                    {items.map((suggestion, index) =>
+                                    {suggestions.map((suggestion, index) =>
                                       renderSuggestion({
                                         suggestion,
                                         index,
@@ -266,12 +266,12 @@ const mapDispatchToProps = dispatch => ({
   addItem(item) {
     dispatch(addItemAsync(item));
   },
-  getItemsBySymbol(symbol, listId) {
-    dispatch(getItemsBySymbolAsync(symbol, listId));
+  getItemsBySymbol(lastWord, listId) {
+    dispatch(getSuggestionsByLastWordAsync(lastWord, listId));
   },
 });
 
-const mapStateToProps = state => ({ symbolItems: state.lists.symbolItems });
+const mapStateToProps = state => ({ suggestions: state.lists.suggestions });
 
 Item.propTypes = {
   classes: PropTypes.object.isRequired,

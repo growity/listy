@@ -11,9 +11,9 @@ export default (state = initialState, action) => {
     //   //   ),
     //   // };
     // }
-    case 'GET_SYMBOL_ITEMS': {
-      return { ...state, symbolItems: action.symbolItems };
-    }
+    // case 'GET_SYMBOL_ITEMS': {
+    //   return { ...state, symbolItems: action.symbolItems };
+    // }
     case 'GET_ITEMS':
     default:
       return state;
