@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -17,7 +17,7 @@ import { connect } from 'react-redux';
 import Downshift from 'downshift';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import { addItemAsync, getItemsAsync, getItemsBySymbolAsync } from '../actions/item';
+import { addItemAsync, getItemsBySymbolAsync } from '../actions/item';
 
 const styles = theme => ({
   root: {
@@ -92,28 +92,22 @@ function renderSuggestion(Suggestion) {
   const isHighlighted = highlightedIndex === index;
   const isSelected = (selectedItem || '').indexOf(suggestion.text) > -1;
 
-  let suggestions = '';
-  if (!selectedItem.includes(suggestion.symbol.concat(suggestion.text))) {
-    suggestions = (
-      <MenuItem
-        {...itemProps}
-        key={suggestion.id}
-        selected={isHighlighted}
-        component="div"
-        style={{
-          fontWeight: isSelected ? 500 : 400,
-        }}
-      >
-        {suggestion.text}
-      </MenuItem>
-    );
-  } else {
-    suggestions = ('');
-  }
-  return suggestions;
+  return (!selectedItem.includes(suggestion.symbol.concat(suggestion.text))) ? (
+    <MenuItem
+      {...itemProps}
+      key={suggestion.id}
+      selected={isHighlighted}
+      component="div"
+      style={{
+        fontWeight: isSelected ? 500 : 400,
+      }}
+    >
+      {suggestion.text}
+    </MenuItem>
+  ) : ('');
 }
 
-class TableItem extends React.Component {
+class Item extends Component {
   constructor(props) {
     super(props);
     const { list } = props;
@@ -121,7 +115,6 @@ class TableItem extends React.Component {
       text: '',
       list_id: list.id,
       selectedItem: [],
-      symbolItems: [],
       backspace: false,
     };
     this.handleButton = this.handleButton.bind(this);
@@ -280,8 +273,8 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => ({ symbolItems: state.lists.symbolItems });
 
-TableItem.propTypes = {
+Item.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(TableItem));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Item));
