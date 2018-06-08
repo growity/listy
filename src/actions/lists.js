@@ -5,9 +5,9 @@ export const getLists = () => ({
   // lists: data,
 });
 
-export const addLists = data => ({
+export const addLists = list => ({
   type: 'ADD_LIST',
-  lists: data,
+  list,
 });
 
 export function getListsAsync() {
@@ -19,9 +19,9 @@ export function getListsAsync() {
   };
 }
 
-export function addListAsync(listArgument) {
+export function addListAsync(list) {
   return (dispatch) => {
-    dispatch(addLists(listArgument));
+    dispatch(addLists(list));
     // DB.lists.add(listArgument).then(() => {
     //   dispatch(getListsAsync());
     // });

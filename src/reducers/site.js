@@ -4,7 +4,7 @@ const initialState = { sites: [] };
 export default (state = initialState, action) => {
   switch (action.type) {
     case GET_SITES:
-      return { ...state, sites: action.site };
+      return { ...state, sites: action.sites };
     case ADD_SITE:
     default:
       return state;

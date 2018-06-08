@@ -150,8 +150,8 @@ class Link extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  addNewSite(newSiteObject) {
-    dispatch(addSiteAsync(newSiteObject));
+  addNewSite(site) {
+    dispatch(addSiteAsync(site));
   },
   getSiteList() {
     dispatch(siteListAsync());

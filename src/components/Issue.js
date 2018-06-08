@@ -40,9 +40,12 @@ class Issue extends Component {
       isDone: false,
       title: '',
     };
-    props.getIssues();
     this.handleButton = this.handleButton.bind(this);
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.getIssues();
   }
 
   handleChange = name => event => {
@@ -131,8 +134,8 @@ class Issue extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  addIssue(issueArgument) {
-    dispatch(addIssueAsync(issueArgument));
+  addIssue(issue) {
+    dispatch(addIssueAsync(issue));
   },
   getIssues() {
     dispatch(issueListAsync());

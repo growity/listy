@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
-import reducers from './reducer/index';
+import reducers from './reducers/index';
 import registerServiceWorker from './registerServiceWorker';
 import Lists from './components/Lists';
 import TableOfLists from './components/TablesOfLists';

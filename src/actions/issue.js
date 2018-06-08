@@ -1,8 +1,8 @@
 import DB from '../db/db';
 
-export const issueList = data => ({
+export const issueList = issues => ({
   type: 'GET_ISSUES',
-  issues: data,
+  issues,
 });
 
 export function issueListAsync() {
@@ -13,9 +13,9 @@ export function issueListAsync() {
   };
 }
 
-export function addIssueAsync(issueArgument) {
+export function addIssueAsync(issue) {
   return (dispatch) => {
-    DB.issue.add(issueArgument).then(() => {
+    DB.issue.add(issue).then(() => {
       dispatch(issueListAsync());
     });
   };
