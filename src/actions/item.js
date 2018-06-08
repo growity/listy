@@ -1,11 +1,11 @@
 // import DB from '../db/db';
 // import { getListsAsync } from './lists';
 
-export const itemList = (data, id) => ({
-  type: 'GET_ITEMS',
-  items: data,
-  list_id: id,
-});
+// export const itemList = (items, list_id) => ({
+//   type: 'GET_ITEMS',
+//   items,
+//   list_id,
+// });
 
 export const addItem = (data, id) => ({
   type: 'ADD_ITEM',
@@ -18,27 +18,27 @@ export const symbolItemsList = lastParams => ({
   lastParams,
 });
 
-export function getItemsAsync(listId = null) {
-  return (dispatch) => {
-    dispatch(itemList([], null));
-    // if (listId === null) {
-    //   dispatch(itemList([], null));
-    // } else {
-    //   DB.lists.get(listId).then((items) => {
-    //     dispatch(itemList(items, listId));
-    //   });
-    // }
-  };
-}
+// export function getItemsAsync(listId = null) {
+//   return (dispatch) => {
+//     dispatch(itemList([], null));
+//     if (listId === null) {
+//       dispatch(itemList([], null));
+//     } else {
+//       DB.lists.get(listId).then((list) => {
+//         dispatch(itemList(list, listId));
+//       });
+//     }
+  // };
+// }
 
 export function addItemAsync(item) {
   return (dispatch) => {
     dispatch(addItem(item, item.list_id));
     // const itemSymbols = [];
-    // itemArgument.text.split(' ').map((items) => {
+    // item.text.split(' ').forEach((items) => {
     //   DB.lists.get({ symbol: items[0] }).then((item) => {
-    //     if (typeof item === 'object' && typeof item.items === 'object') {
-    //       item.items.map((it) => {
+    //     if (Array.isArray(item.items)) {
+    //       item.items.forEach((it) => {
     //         if (it.text === items.substring(1, items.length)) {
     //           itemSymbols.push({ symbol: items });
     //         }
@@ -49,14 +49,14 @@ export function addItemAsync(item) {
     //   });
     //   return true;
     // });
-    // itemArgument.selectedItem = itemSymbols;
-    // DB.lists.get(itemArgument.list_id).then((list) => {
-    //   if (list.items === undefined || typeof list.items !== 'object') {
+    // item.selectedItem = itemSymbols;
+    // DB.lists.get(item.list_id).then((list) => {
+    //   if (Array.isArray(list.items)) {
     //     list.items = [];
     //   }
-    //   list.items.push(itemArgument);
+    //   list.items.push(item);
     //   DB.lists
-    //     .update(itemArgument.list_id, { items: list.items })
+    //     .update(item.list_id, { items: list.items })
     //     .then(() => dispatch(getListsAsync()));
     // });
   };
@@ -74,12 +74,12 @@ export function getItemsBySymbolAsync(lastWord, listId) {
   //     .notEqual(listId)
   //     .and(lists => lists.symbol === symbol[0])
   //     .toArray()
-  //     .then((items) => {
-  //       if (typeof items === 'object') {
-  //         items.map((item) => {
-  //           item.items.map((it) => {
-  //             if (it.text.toLowerCase().indexOf(text) > -1) {
-  //               allItems.push({ text: it.text, symbol: item.symbol });
+  //     .then((list) => {
+  //       if (typeof list === 'object') {
+  //         list.forEach((listItem) => {
+  //           listItem.items.forEach((item) => {
+  //             if (item.text.toLowerCase().indexOf(text) > -1) {
+  //               allItems.push({ text: item.text, symbol: listItem.symbol });
   //             }
   //             return true;
   //           });

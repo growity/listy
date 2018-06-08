@@ -273,9 +273,6 @@ const mapDispatchToProps = dispatch => ({
   addItem(item) {
     dispatch(addItemAsync(item));
   },
-  getItems(listId) {
-    dispatch(getItemsAsync(listId));
-  },
   getItemsBySymbol(symbol, listId) {
     dispatch(getItemsBySymbolAsync(symbol, listId));
   },
