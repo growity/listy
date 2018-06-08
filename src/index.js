@@ -9,8 +9,8 @@ import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
 import reducers from './reducers/index';
 import registerServiceWorker from './registerServiceWorker';
+import ListForm from './components/ListForm';
 import Lists from './components/Lists';
-import TableOfLists from './components/TablesOfLists';
 
 const createStoreMiddleware = applyMiddleware(thunkMiddleware)(createStore);
 const root = { flexGrow: 1 };
@@ -26,9 +26,9 @@ const Index = () => (
           </AppBar>
         </Grid>
         <Grid item xs={12} sm={12}>
-          <Lists />
+          <ListForm />
         </Grid>
-        <TableOfLists />
+        <Lists />
       </Grid>
     </div>
   </Provider>
