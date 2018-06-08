@@ -24,7 +24,7 @@ export default (state = initialState, action) => {
           symbolItems: [],
         };
       }
-      const foundItems = targetList.items.filter(item => item.text.indexOf(word) > -1);
+      const foundItems = targetList.items.filter(item => item.text.toLowerCase().startsWith(word));
       foundItems.forEach((item) => { item.symbol = targetList.symbol; });
 
       return {
