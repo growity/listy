@@ -1,7 +1,8 @@
 import DB from '../db/db';
+import { GET_ISSUES } from '../constants';
 
 export const issueList = issues => ({
-  type: 'GET_ISSUES',
+  type: GET_ISSUES,
   issues,
 });
 

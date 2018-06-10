@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import Grid from '@material-ui/core/Grid';
 import { connect } from 'react-redux';
 import Item from './Item';
-import { addListAsync, getListsAsync } from '../actions/lists';
+import { getListsAsync } from '../actions/lists';
 
 
 class Lists extends Component {
@@ -24,13 +25,19 @@ class Lists extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  addList(list) {
-    dispatch(addListAsync(list));
-  },
   getLists() {
     dispatch(getListsAsync());
   },
 });
+
+Lists.defaultProps = {
+  getLists: () => {},
+};
+
+Lists.propTypes = {
+  lists: PropTypes.array.isRequired,
+  getLists: PropTypes.func,
+};
 
 const mapStateToProps = state => state.lists;
 

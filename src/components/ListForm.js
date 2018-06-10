@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -24,6 +25,7 @@ class ListForm extends Component {
     this.state = {
       title: '',
       symbol: '',
+      id: new Date(),
     };
     this.handleButton = this.handleButton.bind(this);
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
@@ -34,23 +36,23 @@ class ListForm extends Component {
     this.props.getLists();
   }
 
-  handleButton = () => {
+  handleButton() {
     this.props.addList({
       title: this.state.title,
       symbol: this.state.symbol,
-      id: new Date(),
+      id: this.state.id,
       items: [],
     });
-    this.setState({ title: '', symbol: '', id: '' });
-  };
+    this.setState({ title: '', symbol: '', id: new Date() });
+  }
 
-  handleChangeTitle = (e) => {
+  handleChangeTitle(e) {
     this.setState({ title: e.target.value });
-  };
+  }
 
-  handleChangeSymbol = (e) => {
+  handleChangeSymbol(e) {
     this.setState({ symbol: e.target.value });
-  };
+  }
 
   render() {
     return (
@@ -98,6 +100,16 @@ const mapDispatchToProps = dispatch => ({
     dispatch(getListsAsync());
   },
 });
+
+ListForm.defaultProps = {
+  addList: () => {},
+  getLists: () => {},
+};
+
+ListForm.propTypes = {
+  addList: PropTypes.func,
+  getLists: PropTypes.func,
+};
 
 const mapStateToProps = state => state.lists;
 

@@ -1,8 +1,9 @@
+import { GET_ITEMS } from '../constants';
 
 const initialState = { items: [], symbolItems: [] };
 export default (state = initialState, action) => {
   switch (action.type) {
-    // case 'ADD_ITEM': {
+    // case ADD_ITEM: {
     //   console.log('ADD_ITEM:', state);
     //   return { ...state, lists: { ...state.lists[0].items, items: [{ id: 'asdf' }] } };
     //   // return {
@@ -14,7 +15,7 @@ export default (state = initialState, action) => {
     // case 'GET_SYMBOL_ITEMS': {
     //   return { ...state, symbolItems: action.symbolItems };
     // }
-    case 'GET_ITEMS':
+    case GET_ITEMS:
     default:
       return state;
   }
