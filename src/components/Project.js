@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -33,6 +34,7 @@ class Project extends Component {
       title: '',
       description: '',
     };
+    this.handleButton = this.handleButton.bind(this);
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
     this.handleChangeDescription = this.handleChangeDescription.bind(this);
   }
@@ -41,11 +43,11 @@ class Project extends Component {
     this.props.getProjects();
   }
 
-  handleButton = () => {
+  handleButton() {
     const projectParam = { title: this.state.title, description: this.state.description };
     this.props.addProject(projectParam);
     this.setState({ title: '', description: '' });
-  };
+  }
 
   handleChangeTitle(e) {
     this.setState({ title: e.target.value });
@@ -56,7 +58,8 @@ class Project extends Component {
   }
 
   render() {
-    const tableRows = this.props.projects ? this.props.projects.map(link => (
+    const { projects } = this.props;
+    const tableRows = projects ? projects.map(link => (
       <TableRow key={link.id}>
         <TableCell>{link.id}</TableCell>
         <TableCell>{link.title}</TableCell>
@@ -120,6 +123,17 @@ const mapDispatchToProps = dispatch => ({
     dispatch(projectListAsync());
   },
 });
+
+Project.defaultProps = {
+  addProject: () => {},
+  getProjects: () => {},
+};
+
+Project.propTypes = {
+  projects: PropTypes.array.isRequired,
+  addProject: PropTypes.func,
+  getProjects: PropTypes.func,
+};
 
 const mapStateToProps = state => state.projects;
 

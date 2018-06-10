@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -48,7 +49,7 @@ class Issue extends Component {
     this.props.getIssues();
   }
 
-  handleChange = name => event => {
+  handleChange = name => (event) => {
     this.setState({ [name]: event.target.checked });
   };
 
@@ -67,7 +68,8 @@ class Issue extends Component {
   };
 
   render() {
-    const tableRows = this.props.issues ? this.props.issues.map(issue => (
+    const { issues } = this.props;
+    const tableRows = issues ? issues.map(issue => (
       <TableRow key={issue.id}>
         <TableCell>{issue.id}</TableCell>
         <TableCell>{issue.title}</TableCell>
@@ -144,6 +146,19 @@ const mapDispatchToProps = dispatch => ({
     dispatch(updateIssueStatusAsync(issueId, statusIssue));
   },
 });
+
+Issue.defaultProps = {
+  updateIssuesStatus: () => {},
+  getIssues: () => {},
+  addIssue: () => {},
+};
+
+Issue.propTypes = {
+  issues: PropTypes.array.isRequired,
+  updateIssuesStatus: PropTypes.func,
+  getIssues: PropTypes.func,
+  addIssue: PropTypes.func,
+};
 
 const mapStateToProps = state => state.issues;
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
@@ -42,7 +43,6 @@ class Link extends Component {
     super(props);
     this.state = {
       text: '',
-      errorText: '',
     };
     this.handleButton = this.handleButton.bind(this);
     this.handleChangeInput = this.handleChangeInput.bind(this);
@@ -87,13 +87,7 @@ class Link extends Component {
             image,
             url,
           });
-        }).catch((error) => {
-          this.setState({ errorText: 'It failed!' });
-          console.error('Error', error);
         });
-        this.setState({ errorText: '' });
-      } else {
-        this.setState({ errorText: 'Invalid URL' });
       }
       this.setState({ text: '' });
     }
@@ -157,6 +151,17 @@ const mapDispatchToProps = dispatch => ({
     dispatch(siteListAsync());
   },
 });
+
+Link.defaultProps = {
+  addNewSite: () => {},
+  getSiteList: () => {},
+};
+
+Link.propTypes = {
+  sites: PropTypes.array.isRequired,
+  addNewSite: PropTypes.func,
+  getSiteList: PropTypes.func,
+};
 
 const mapStateToProps = state => state.sites;
 

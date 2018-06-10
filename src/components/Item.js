@@ -117,8 +117,6 @@ class Item extends Component {
       selectedItem: [],
       backspace: false,
     };
-    this.handleButton = this.handleButton.bind(this);
-    this.handleChangeTitle = this.handleChangeTitle.bind(this);
   }
 
   state = {
@@ -170,7 +168,7 @@ class Item extends Component {
       this.props.addItem({
         id: new Date(),
         text: this.state.text,
-        list_id: this.state.list_id,
+        listId: this.state.list_id,
         selectedItem: [],
       });
       this.setState({ text: '' });
@@ -216,7 +214,6 @@ class Item extends Component {
                             getInputProps,
                             getItemProps,
                             isOpen,
-                            inputValue: inputValue2,
                             selectedItem: selectedItem2,
                             highlightedIndex,
                           }) => (
@@ -273,8 +270,18 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => ({ suggestions: state.lists.suggestions });
 
+Item.defaultProps = {
+  suggestions: [],
+  getItemsBySymbol: () => {},
+  addItem: () => {},
+};
+
 Item.propTypes = {
   classes: PropTypes.object.isRequired,
+  list: PropTypes.object.isRequired,
+  suggestions: PropTypes.array,
+  getItemsBySymbol: PropTypes.func,
+  addItem: PropTypes.func,
 };
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Item));

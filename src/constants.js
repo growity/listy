@@ -1,2 +1,12 @@
 export const ADD_SITE = 'ADD_SITE';
 export const GET_SITES = 'GET_SITES';
+export const ADD_ISSUE = 'ADD_ISSUE';
+export const GET_ISSUES = 'GET_ISSUES';
+export const GET_ITEMS = 'GET_ITEMS';
+export const ADD_LIST = 'ADD_LIST';
+export const ADD_ITEM = 'ADD_ITEM';
+export const GET_SUGGESTIONS = 'GET_SUGGESTIONS';
+export const GET_LISTS = 'GET_LISTS';
+export const ADD_PROJECT = 'ADD_PROJECT';
+export const GET_PROJECTS = 'GET_PROJECTS';
+export const GET_SYMBOL_ITEMS = 'GET_SYMBOL_ITEMS';

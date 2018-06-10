@@ -1,5 +1,6 @@
 // import DB from '../db/db';
 // import { getListsAsync } from './lists';
+import { ADD_ITEM, GET_SUGGESTIONS } from '../constants';
 
 // export const itemList = (items, list_id) => ({
 //   type: 'GET_ITEMS',
@@ -7,14 +8,14 @@
 //   list_id,
 // });
 
-export const addItem = (data, id) => ({
-  type: 'ADD_ITEM',
-  items: data,
-  list_id: id,
+export const addItem = (item, listId) => ({
+  type: ADD_ITEM,
+  item,
+  listId,
 });
 
 export const getSuggestions = lastParams => ({
-  type: 'GET_SUGGESTIONS',
+  type: GET_SUGGESTIONS,
   lastParams,
 });
 

@@ -5,8 +5,8 @@ export const isUrl = (url) => {
 };
 /* eslint-enable max-len */
 
-export const httpGet = (theUrl) => {
-  return new Promise((resolve, reject) => {
+export const httpGet = theUrl =>
+  new Promise((resolve, reject) => {
     const xmlhttp = new XMLHttpRequest();
 
     xmlhttp.responseType = 'document';
@@ -25,4 +25,3 @@ export const httpGet = (theUrl) => {
     xmlhttp.open('GET', theUrl, true);
     xmlhttp.send();
   });
-};
