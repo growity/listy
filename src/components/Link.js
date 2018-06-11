@@ -152,15 +152,10 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-Link.defaultProps = {
-  addNewSite: () => {},
-  getSiteList: () => {},
-};
-
 Link.propTypes = {
   sites: PropTypes.array.isRequired,
-  addNewSite: PropTypes.func,
-  getSiteList: PropTypes.func,
+  addNewSite: PropTypes.func.isRequired,
+  getSiteList: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => state.sites;

@@ -147,17 +147,11 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-Issue.defaultProps = {
-  updateIssuesStatus: () => {},
-  getIssues: () => {},
-  addIssue: () => {},
-};
-
 Issue.propTypes = {
   issues: PropTypes.array.isRequired,
-  updateIssuesStatus: PropTypes.func,
-  getIssues: PropTypes.func,
-  addIssue: PropTypes.func,
+  updateIssuesStatus: PropTypes.func.isRequired,
+  getIssues: PropTypes.func.isRequired,
+  addIssue: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => state.issues;

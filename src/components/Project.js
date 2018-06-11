@@ -124,15 +124,10 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-Project.defaultProps = {
-  addProject: () => {},
-  getProjects: () => {},
-};
-
 Project.propTypes = {
   projects: PropTypes.array.isRequired,
-  addProject: PropTypes.func,
-  getProjects: PropTypes.func,
+  addProject: PropTypes.func.isRequired,
+  getProjects: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => state.projects;
