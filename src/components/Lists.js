@@ -30,13 +30,9 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-Lists.defaultProps = {
-  getLists: () => {},
-};
-
 Lists.propTypes = {
   lists: PropTypes.array.isRequired,
-  getLists: PropTypes.func,
+  getLists: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => state.lists;

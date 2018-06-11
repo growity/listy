@@ -1,12 +1,13 @@
 // import DB from '../db/db';
+import { GET_LISTS, ADD_LIST } from '../constants';
 
 export const getLists = () => ({
-  type: 'GET_LISTS',
+  type: GET_LISTS,
   // lists: data,
 });
 
 export const addList = list => ({
-  type: 'ADD_LIST',
+  type: ADD_LIST,
   list,
 });
 

@@ -11,7 +11,6 @@ import reducers from './reducers/index';
 import registerServiceWorker from './registerServiceWorker';
 import ListForm from './components/ListForm';
 import Lists from './components/Lists';
-import Project from './components/Project';
 
 const createStoreMiddleware = applyMiddleware(thunkMiddleware)(createStore);
 const root = { flexGrow: 1 };
@@ -30,7 +29,6 @@ const Index = () => (
           <ListForm />
         </Grid>
         <Lists />
-        <Project />
       </Grid>
     </div>
   </Provider>

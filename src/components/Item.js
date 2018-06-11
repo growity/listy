@@ -272,16 +272,14 @@ const mapStateToProps = state => ({ suggestions: state.lists.suggestions });
 
 Item.defaultProps = {
   suggestions: [],
-  getItemsBySymbol: () => {},
-  addItem: () => {},
 };
 
 Item.propTypes = {
   classes: PropTypes.object.isRequired,
   list: PropTypes.object.isRequired,
-  suggestions: PropTypes.array,
-  getItemsBySymbol: PropTypes.func,
-  addItem: PropTypes.func,
+  suggestions: PropTypes.array.isRequired,
+  getItemsBySymbol: PropTypes.func.isRequired,
+  addItem: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Item));

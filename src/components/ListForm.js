@@ -101,14 +101,9 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-ListForm.defaultProps = {
-  addList: () => {},
-  getLists: () => {},
-};
-
 ListForm.propTypes = {
-  addList: PropTypes.func,
-  getLists: PropTypes.func,
+  addList: PropTypes.func.isRequired,
+  getLists: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => state.lists;
